@@ -1,5 +1,5 @@
 ---
-title: How do indexes actually work? Simple overview.
+title: A Not-So-Thorough Overview of Database Indexes
 date: 2024-03-02
 categories: [Databases]
 tags: [databases, indexes]
