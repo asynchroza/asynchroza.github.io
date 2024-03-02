@@ -1,5 +1,5 @@
 ---
-title: How do indexes actually work?
+title: How do indexes actually work? Simple overview.
 date: 2024-03-02
 categories: [Databases]
 tags: [databases, indexes]
@@ -56,14 +56,32 @@ creates a clustered index by default. What's so special about clustered indexes 
 <a href="https://www.geeksforgeeks.org/difference-between-clustered-and-non-clustered-index/">GFG: Difference Between Clustered and Non-Clustered Indexes</a>
 </div>
 
-Initially, it can be perplexing to determine the targets of these pointers. To clarify, on the left side, there's a cluster table which stores the primary keys of the rows as the keys and the corresponding pointers to physical blocks as values.
+Initially, it can be perplexing to determine the targets of these pointers. To clarify, on the left side, there's a data structure (usually B-trees) which stores the primary keys of the rows as the keys and the corresponding pointers to physical blocks as values.
 
 Let's consider that we are searching for the row with `PK = 2`. We search the clustered table on the left to locate the key `2`. Once found, we look up its pointer value, which directly guides us to the physical location where the rows with that key are stored. To be honest, the example above is not ideal, or it is only as good as it can be, given that there isn't a single example conforming to a proper "algorithm" for selecting pointers to the physical blocks. If you compare this example with the [first image on the page](#clustered-index-example), you will notice that the algorithm for pointer selection is somewhat different. Additionally, there appears to be a mistake in the selection of the `5`th key's pointer in the first example.
 Therefore, it's advisable not to focus too much on these images but, instead, to remember that clustered indexes are sorted in the same order as the rows are physically stored.
 
+As mentioned earlier, clustered indexes are typically employed for primary keys. Can they be used for any other field? The possibility exists, but let's examine the scenario with the following data:
+
+```
+user_id   name
+1         Alex Anderson
+2         Mike Peterson
+3         Sarah Mitchell
+4         Emily Turner
+```
+
+If you designate `name` as a clustered index, depending on the sorting algorithm, you could incur significant costs due to physically shifting/moving a substantial amount of data.
+
 ### Non-clustered index
 
-> TBA
+Non-clustered indexes are not dependant on the physical order of the data. They're built using the same B-tree structure used for clustered indexes, but with the difference that the
+data and the index are stored separately. A non-clustered index contains a pointer, but rather pointing to a physical location of where the records with this PK lie, they point directly to the data row.
+
+So, what's the purpose of non-clustered indexes? Their goal is to improve the performance of frequently used queries not covered by the clustered index, if there's one at all.
+An important note; tables with a clustered index are called `cluter tables` and tables without one are called `heaps`.
+
+> TBA : Simple overview of heap tables, row locators, indexes with included columns
 
 ### Comparison of clustered and non-clustered indexes
 
