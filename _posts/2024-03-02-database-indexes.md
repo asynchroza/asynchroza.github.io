@@ -43,7 +43,7 @@ Aside from the required extra memory, it costs time and processing power to upda
 
 ## Different types of indexes
 
-Some of the most common types of indexes are [Clustered index and Non-clustered index](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described?view=sql-server-ver16), [Hash index](), [B-tree index](), [Unique index](), [Full-text index]()
+Some of the most common types of indexes are [Clustered index and Non-clustered index](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described?view=sql-server-ver16), [Hash index](#clustered-index), [B-tree index](#clustered-index), [Unique index](#clustered-index), [Full-text index](#clustered-index)
 
 ### Clustered index
 
