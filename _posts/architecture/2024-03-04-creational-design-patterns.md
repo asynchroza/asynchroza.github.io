@@ -114,7 +114,7 @@ function publishAsset(factory: AssetPublishingServiceFactory) {
   service.publish(); // implementation which differs under the hood
 
   // update upload status in admin app for uploading assets
-  // send notifications to clients that a new asset is available in their realm
+  // send notifications to clients that a new asset is available in their environment
 }
 
 // ...
