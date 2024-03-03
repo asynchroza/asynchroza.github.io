@@ -137,3 +137,5 @@ Generally, hashing indexes demonstrate efficiency until they encounter a signifi
 An illustrative instance of a hash index is associating a primary key (PK) with a password hash to avoid binary searching the corresponding data entry.
 
 ### Unique index
+
+> TBA
