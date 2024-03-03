@@ -134,4 +134,4 @@ Hashing indexes enable rapid access with nearly constant time complexity, typica
 This involves a conventional hash table where keys are rehashed as 4-byte hashes, and the corresponding pointers to record rows.
 Generally, hashing indexes demonstrate efficiency until they encounter a significant number of collisions. In such cases, collisions—instances where different keys produce the same hash—can impact the performance of the hash index, emphasizing the need for careful consideration in design and implementation.
 
-An illustrative instance of a hash index is associating a primary key (PK) with a password hash to avoid binary searching the corresponding data entry.
+An illustrative instance of a hash index is associating a primary key (PK) with a password hash to avoid binary searching for the corresponding data entry.
