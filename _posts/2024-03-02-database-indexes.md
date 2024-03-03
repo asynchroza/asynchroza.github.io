@@ -81,7 +81,34 @@ data and the index are stored separately. A non-clustered index contains a point
 So, what's the purpose of non-clustered indexes? Their goal is to improve the performance of frequently used queries not covered by the clustered index, if there's one at all.
 An important note; tables with a clustered index are called `cluter tables` and tables without one are called `heaps`.
 
-> TBA : Simple overview of heap tables, row locators, indexes with included columns
+#### Heaps
+
+Heaps are tables which store their information in pages and are unordered. Rows are identified by a single 8-byte row identifier (size might differ between databases).
+The heap table is characterized by a single [IAM page (`Index Allocation Map`)](https://techcommunity.microsoft.com/t5/sql-server-support-blog/sql-server-iam-page/ba-p/1637065) which holds together a heap, a collection of pages.
+
+<div style="display:flex; flex-direction:column; justify-content: center; align-items: center; margin-bottom: 10px;">
+<img src="assets/img/heap-table-sql-server.gif" alt="Clustered Index" width="500"/>
+<a href="https://learn.microsoft.com/en-us/sql/relational-databases/indexes/heaps-tables-without-clustered-indexes?view=sql-server-ver16#heap-structures">Microsoft: Heaps (heap tables)</a>
+</div>
+
+#### Row locators
+
+At this point, we've discussed `row locators` several times - these are pointers from index rows in a non-clustered index to corresponding data rows. In the case of a clustered table, the row locator serves as a pointer to the physical block section where the records associated with the key can be found.
+
+#### Included columns in the index?
+
+You may benefit from including certain columns to your non-clustered indexes if you regularly have to query them.
+
+| ID  | RID                | Name |
+| --- | ------------------ | ---- |
+| 1   | 0x1A2B3C4D5E6F7A8B | Tony |
+| 2   | 0x4E7A8F1D2B6C3E9A | Sony |
+
+Let's say your query requires you to retrieve a user's name using their primary key. To avoid inefficient data access, you may include the name column within the index and directly return the information.
+
+**_Yes, data access is costly_**. Retrieving data directly from an index is consistently more efficient compared to querying the index, then accessing the record and finally returning the data.
+
+However, these types of indexes are only beneficial when you frequently run specific queries. Otherwise, they may allocate unnecessary memory without providing significant advantages.
 
 ### Comparison of clustered and non-clustered indexes
 
