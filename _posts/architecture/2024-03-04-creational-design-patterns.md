@@ -57,7 +57,7 @@ Why do we need this? The Factory Method allows us to separate the object constru
 
 In Quickbase, we recently worked on extending the collection of assets our marketplace supports. We have an application where you can upload an asset and make a request towards the backend to have this asset published to different environments.
 
-For the sake of a good example, I rewrote the factory method we used there to conform to the design pattern we're trying to explain here.
+For the sake of a good example, I rewrote the factory pattern we used there to conform to the design pattern we're trying to explain here.
 
 ```typescript
 abstract class AssetPublishingService {
