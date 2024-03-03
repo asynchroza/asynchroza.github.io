@@ -4,7 +4,7 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-Hey, I'm Michael.. or Mihail 🇧🇬
+Hey 👋, I'm Michael.. or Mihail 🇧🇬
 
 A senior year student at [AUBG](https://www.aubg.edu/) 👨‍🎓
 
