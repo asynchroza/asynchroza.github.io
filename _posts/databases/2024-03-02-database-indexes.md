@@ -43,7 +43,7 @@ Aside from the required extra memory, it costs time and processing power to upda
 
 ## Different types of indexes
 
-Some of the most common types of indexes are [Clustered index and Non-clustered index](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described?view=sql-server-ver16), [Hash index](https://samuel-sorial.hashnode.dev/understanding-hash-indexes), [Unique index](#clustered-index)
+Some of the most common types of indexes are [Clustered index and Non-clustered index](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described?view=sql-server-ver16), [Hash index](https://samuel-sorial.hashnode.dev/understanding-hash-indexes)
 
 ### Clustered index
 
@@ -135,7 +135,3 @@ This involves a conventional hash table where keys are rehashed as 4-byte hashes
 Generally, hashing indexes demonstrate efficiency until they encounter a significant number of collisions. In such cases, collisions—instances where different keys produce the same hash—can impact the performance of the hash index, emphasizing the need for careful consideration in design and implementation.
 
 An illustrative instance of a hash index is associating a primary key (PK) with a password hash to avoid binary searching the corresponding data entry.
-
-### Unique index
-
-> TBA
