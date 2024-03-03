@@ -4,8 +4,8 @@ date: 2024-03-02
 categories: [Databases]
 tags: [databases, indexes]
 pin: true
-math: true
-mermaid: true
+math: false
+mermaid: false
 ---
 
 ## What's an index?
