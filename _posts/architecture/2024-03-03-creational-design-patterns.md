@@ -51,7 +51,82 @@ Here we compare the two references, and as you can see, JavaScript returns `true
 
 ## Factory Method
 
-> TBA
+The Factory Method design pattern... The first time I encountered this design pattern, I didn't grasp the fact that when they refer to a `method`, they mean a class method, not just a way of instantiating objecs. Well, in a sense, it is related to creating objects, but the main point here is that we establish what is known as an abstract factory. This abstract factory essentially provides a hook for creating said objects.
+
+Why do we need this? The Factory Method allows us to separate the object construction logic from the code that actually uses these objects.
+
+In Quickbase, we recently worked on extending the collection of assets our marketplace supports. We have an application where you can upload an asset and make a request towards the backend to have this asset published to different environments.
+
+For the sake of a good example, I rewrote the factory method we used there to conform to the design pattern we're trying to explain here.
+
+```typescript
+abstract class AssetPublishingService {
+  abstract publish(): void;
+}
+
+class ImagePublishingService extends AssetPublishingService {
+  constructor() {
+    super();
+  }
+
+  publish(): void {
+    console.log("Publishing image");
+  }
+}
+
+class VideoPublishingService extends AssetPublishingService {
+  constructor() {
+    super();
+  }
+
+  publish(): void {
+    console.log("Publishing video");
+  }
+}
+
+abstract class AssetPublishingServiceFactory {
+  abstract createService(): AssetPublishingService;
+}
+
+class ImagePublishingServiceFactory extends AssetPublishingServiceFactory {
+  createService(): AssetPublishingService {
+    return new ImagePublishingService();
+  }
+}
+
+class VideoPublishingServiceFactory extends AssetPublishingServiceFactory {
+  createService(): AssetPublishingService {
+    return new VideoPublishingService();
+  }
+}
+```
+
+We first define an abstract base class called `AssetPublishingService` which has an abstract method called `createService`. This method will be used by the subclasses to create the corresponding services.
+
+Then, we define the two factories which will accordignly create new objects either of the type `VideoPublishingService` or `ImagePublishingService`.
+
+Sounds good. But why?
+
+```typescript
+function publishAsset(factory: AssetPublishingServiceFactory) {
+  const service = factory.createService();
+
+  service.publish(); // implementation which differs under the hood
+
+  // update upload status in admin app for uploading assets
+  // send notifications to clients that a new asset is available in their realm
+}
+
+// ...
+
+if (request.type === "image") {
+  publishAsset(new ImagePublishingServiceFactory());
+} else if (request.type === "video") {
+  publishAsset(new VideoPublishingServiceFactory());
+}
+```
+
+This allows for flexibility and extensibility in the system, as new services can be created without modifying the code which handles the common functionality for publishing assets. Hence, if we decide to implement logic for publishing assets of type `WAV` or `MP3`, the only thing we will have to define is the new asset class with its publishing method accordingly, as well as a new factory. The code in `publishAsset` stays the same.
 
 ## Prototype
 
