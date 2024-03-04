@@ -130,7 +130,53 @@ This allows for flexibility and extensibility in the system, as new services can
 
 ## Prototype
 
-> TBA
+The prototype, or so called _clone_ pattern, is simply just deep cloning an object.
+
+Picture a scenario where you and a friend are using a shared calculator for your accounting exercises. The history stored in the calculator is important to both of you. However, as you both need to leave, it's crucial to ensure that each of you retains a complete and unaltered copy of the calculator's history.
+
+In an unusual twist, these calculators exist on the same machine, and you access them via the internet. Therefore, a simple `const calculator2 = calculator` won't suffice, as it merely creates a reference to the original object. Any updates made to the copy (calculator2) will automatically reflect in the original calculator because they share the same reference.
+
+To prevent inadvertently overwriting the history, you must create a new instance of the calculator. This involves reinitializing all variables and copying the information over to the new instance, ensuring the integrity of the individual calculators' histories.
+
+```typescript
+class Calculator {
+  private history: string[] = [];
+
+  public clone(): Calculator {
+    const cloned = new Calculator();
+    cloned.history = [...this.history];
+    return cloned;
+  }
+
+  public add(x: number, y: number): number {
+    const result = x + y;
+    this.history.push(`added ${x} to ${y} got ${result}`);
+    return result;
+  }
+
+  public getHistory(): string {
+    return this.history.join("\n");
+  }
+}
+
+const calculator = new Calculator();
+
+calculator.add(1, 2);
+calculator.add(3, 4);
+calculator.add(5, 6);
+```
+
+In the `clone` method, observe that we utilize the spread operator for the `history`. This approach ensures the creation of a fresh array instance rather than merely referencing the original `history`. If there were additional class members, a similar procedure would be necessary to ensure their independent instantiation as well.
+
+```typescript
+const calculator = new Calculator();
+const calculatorClone = calculator.clone();
+
+console.log(calculator === calculatorClone); // false
+
+calculator.add(7, 8);
+console.log(calculator.getHistory() === calculatorClone.getHistory()); // false
+```
 
 ## Builder
 
