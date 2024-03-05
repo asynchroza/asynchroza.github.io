@@ -212,25 +212,132 @@ Now, let's see it in action.
 const userService = new BaseFirestoreService<UserCollection>();
 ```
 
-But how do we mold this collection in the `order` subcollection? We need the following piece of code: Our builder pattern.
+But how do we mold this collection in the `order` subcollection? We need the following piece of code:
+
+**Our builder pattern**:
 
 ```typescript
 subcollection<T extends keyof RequiredSchema["subcollections"]>(
     subcollectionName: T,
     documentId: string
 ) {
-    this.setCollectionRef(
+    return new BaseFirestoreService<
+        RequiredSchema["subcollections"][T] extends CollectionSchema
+            ? RequiredSchema["subcollections"][T]
+            : never
+    >(
         `${this.collectionRef.path}/${documentId}/${String(subcollectionName)}`
     );
-
-    return this;
 }
 ```
 
+Creating a new instance of the class aligns with our commitment to enforcing type safety within the ORM. However, in certain scenarios, the builder pattern directly incorporates the modifications into the existing instance.
+
+For example:
+
+```javascript
+subcollection(subcollectionName, documentId) {
+  this.collection = `${this.collectionRef.path}/${documentId}/${String(subcollectionName)}`;
+  return this;
+}
+```
+
+And here's how we actually use it:
+
 ```typescript
-const orderService = userService.subcollection("orders", 102391329);
+const orderService = userService.subcollection("orders", "102391329");
+
+orderSerivce.get("1029392381");
 ```
 
 ## Abstract Factory
 
-> TBA
+We use this design pattern when we want to have different implementations which can be grouped under the same high-level concept.
+Imagine a GUI which has to render different style of components based on the selected theme. In order to achieve single responsibility and avoid tight coupling.
+
+We define factories which can then be plugged into the application:
+
+```typescript
+class ThemeFactory {
+  createButton() {}
+  createInput() {}
+}
+
+class LightThemeFactory extends ThemeFactory {
+  createButton() {
+    return new LightButton();
+  }
+
+  createInput() {
+    return new LightInput();
+  }
+}
+
+class DarkThemeFactory extends ThemeFactory {
+  createButton() {
+    return new DarkButton();
+  }
+
+  createInput() {
+    return new DarkInput();
+  }
+}
+```
+
+Here's an example implementation of the buttons and inputs:
+
+```typescript
+class Button {
+  render() {}
+}
+
+class LightButton extends Button {
+  render() {
+    console.log("Rendering light button");
+  }
+}
+
+class DarkButton extends Button {
+  render() {
+    console.log("Rendering dark button");
+  }
+}
+
+class Input {
+  render() {}
+}
+
+class LightInput extends Input {
+  render() {
+    console.log("Rendering light input");
+  }
+}
+
+class DarkInput extends Input {
+  render() {
+    console.log("Rendering dark input");
+  }
+}
+```
+
+Plugging the factory into the application:
+
+```typescript
+function createUI(themeFactory) {
+  const button = themeFactory.createButton();
+  const input = themeFactory.createInput();
+
+  button.render();
+  input.render();
+}
+
+const lightThemeFactory = new LightThemeFactory();
+createUI(lightThemeFactory);
+
+// or
+
+const darkThemeFactory = new DarkThemeFactory();
+createUI(darkThemeFactory);
+```
+
+Comprehending the difference between the `Factory Method` and the `Abstract Factory` is a bit hard. Abstract Factory is pretty much an extension of the Factory Method where an additional layer of abstraction is added. Here's a link to some linkedin posts which make good [points](https://www.linkedin.com/advice/0/what-differences-between-factory-abstract-design-patterns#:~:text=The%20Factory%20pattern%20deals%20with,the%20number%20of%20classes%20involved.) about the difference between the two.
