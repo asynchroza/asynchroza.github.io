@@ -1,6 +1,6 @@
 ---
 title: Creational Design Patterns - In simple terms
-date: 2024-03-03
+date: 2024-03-04
 categories: [Architecture]
 tags: [design patterns, architecture, javascript]
 pin: false
@@ -187,7 +187,49 @@ Now, with this approach, we can confidently proceed, knowing that sessions won't
 
 ## Builder
 
-> TBA
+The builder pattern is a design pattern that facilitates the construction of complex objects by separating the construction process from the actual representation. This pattern is particularly useful when an object has a large number of possible configurations, and you want to provide a clear and fluent API for constructing it.
+
+Recently I had to develop an in-house [ORM](https://www.freecodecamp.org/news/what-is-an-orm-the-meaning-of-object-relational-mapping-database-tools/) for Firestore, where the structure of data collections and subcollections is pretty much the same, but the collection references are defined a bit differently.
+
+To establish a connection between a subcollection and its parent, the process involves initially creating the parent collection. Subsequently, the builder pattern is applied to shape the parent collection into its specific subcollection, ensuring a cohesive relationship between them.
+
+```typescript
+export class BaseFirestoreService<RequiredSchema extends CollectionSchema> {
+    protected collectionRef: CollectionReference;
+
+    constructor(col: string) {
+        this.setCollection(col);
+    }
+
+    protected setCollection(col: string) {
+      this.collectionRef = collection(db, col)
+    }
+```
+
+Now, let's see it in action.
+
+```typescript
+const userService = new BaseFirestoreService<UserCollection>();
+```
+
+But how do we mold this collection in the `order` subcollection? We need the following piece of code: Our builder pattern.
+
+```typescript
+subcollection<T extends keyof RequiredSchema["subcollections"]>(
+    subcollectionName: T,
+    documentId: string
+) {
+    this.setCollectionRef(
+        `${this.collectionRef.path}/${documentId}/${String(subcollectionName)}`
+    );
+
+    return this;
+}
+```
+
+```typescript
+const orderService = userService.subcollection("orders", 102391329);
+```
 
 ## Abstract Factory
 
