@@ -1,5 +1,5 @@
 ---
-title: Creational Design Patterns - In simple terms
+title: Creational Design Patterns - In Simple Terms
 date: 2024-03-04
 categories: [Architecture]
 tags: [design patterns, architecture, javascript]
