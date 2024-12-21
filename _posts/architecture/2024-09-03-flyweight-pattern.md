@@ -105,4 +105,4 @@ this.title = "New Title";
 ```
 
 \
-This way, we can achieve the desired memory savings and data consistency. If you don't know what `__proto__` is, I would highly suggest you read through Mozilla's docs about the [prototype chain](chaining).
+This way, we can achieve the desired memory savings and data consistency. If you don't know what `__proto__` is, I would highly suggest you read through Mozilla's docs about the [prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain).
