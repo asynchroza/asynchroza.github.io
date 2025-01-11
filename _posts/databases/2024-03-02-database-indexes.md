@@ -1,9 +1,9 @@
 ---
-title: A Not-So-Thorough Overview of Database Indexes
+title: A Brief Overview of Database Indexes
 date: 2024-03-02
 categories: [Databases]
 tags: [databases, indexes]
-pin: true
+pin: false
 math: false
 mermaid: false
 ---
@@ -49,7 +49,7 @@ Some of the most common types of indexes are [Clustered index and Non-clustered 
 
 Clustered indexes sort the data rows based on their primary keys and store it accordingly. Therefore, the only way to have a sorted table in any SQL database is
 by having a clustered index. Behaviour is different between different databases, but there are management systems such Microsoft SQL Server which primary key constraint
-creates a clustered index by default. What's so special about clustered indexes is that data they _point_ to is stored in the same order phisically on the disk as it is in the cluster table.
+creates a clustered index by default. What's so special about clustered indexes is that the data they _point_ to is stored in the same order phisically on the disk as it is in the cluster table.
 
 <div style="display:flex; flex-direction:column; justify-content: center; align-items: center; margin-bottom: 10px;">
 <img src="assets/img/example-clustered-index.jpeg" alt="Clustered Index" width="500"/>
@@ -63,7 +63,7 @@ Therefore, it's advisable not to focus too much on these images but, instead, to
 
 As mentioned earlier, clustered indexes are typically employed for primary keys. Can they be used for any other field? The possibility exists, but let's examine the scenario with the following data:
 
-```
+```txt
 user_id   name
 1         Alex Anderson
 2         Mike Peterson
@@ -71,7 +71,7 @@ user_id   name
 4         Emily Turner
 ```
 
-If you designate `name` as a clustered index, depending on the sorting algorithm, you could incur significant costs due to physically shifting/moving a substantial amount of data.
+If you designate `name` as a clustered index, depending on the sorting algorithm, you could incur significant costs due to physically shifting/moving a substantial amount of data. If the cluster is created on the `name` column, the rows of the table are stored physically in ascending or descending order of `name`.  
 
 ### Non-clustered index
 
